@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite Super Girl ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #ff758f;
+            --bg-color: #fff0f3;
+            --text-color: #590d22;
+            --white: #ffffff;
+            --green: #2ecc71;
+            --red: #e74c3c;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .buttons-container, .options-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn, .option-btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover, .option-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn:active, .option-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-yes {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .btn-no {
+            background-color: var(--red);
+            color: white;
+        }
+
+        .btn-continue {
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .sad-face {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .equation-box {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--red);
+        }
+
+        .input-field {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            margin: 15px auto;
+            display: block;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .error-message {
+            color: var(--red);
+            font-weight: 600;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+
+        .grid-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            background-color: var(--white);
+            color: var(--text-color);
+            border: 3px solid transparent;
+            padding: 20px 15px;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-color);
+            background-color: #ffe5ec;
+        }
+
+        .option-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .textarea-field {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            font-size: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            margin: 15px auto;
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Final Page */
+        #page-final {
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            min-height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #page-final.active {
+            display: flex;
+        }
+
+        .final-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            max-width: 90%;
+        }
+
+        .summary-item {
+            text-align: left;
+            margin: 10px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hearts Animation */
+        .hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: var(--primary-color);
+            animation: floatHeart 4s linear forwards;
+            opacity: 1;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            animation: confettiFall 3s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            .btn, .option-btn { padding: 12px 25px; font-size: 0.95rem; }
+            .grid-options { grid-template-columns: repeat(2, 1fr); }
+            .final-content { padding: 25px; }
+            .summary-item { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">Confirmando convite... ❤️</div>
+
+    <div id="app">
+        <!-- Página 1: Convite Inicial -->
+        <section id="page1" class="page active">
+            <div>
+                <h1>🎬 Rebeca, vamos ir ver Super Girl comigo? ❤️</h1>
+                <div class="buttons-container">
+                    <button class="btn btn-yes" onclick="goToPage('page2')">🟢 Sim</button>
+                    <button class="btn btn-no" onclick="goToPage('page-sad')">🔴 Não</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Triste (Recusa) -->
+        <section id="page-sad" class="page">
+            <div>
+                <div class="sad-face">😢</div>
+                <h2>Poxa... fico muito triste por isso.</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">Gostaria de realmente negar o convite?</p>
+                <div class="buttons-container">
+                    <button class="btn btn-no" onclick="goToPage('page-equation')">😢 Sim</button>
+                    <button class="btn btn-yes" onclick="goToPage('page2')">😊 Não</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página Equação -->
+        <section id="page-equation" class="page">
+            <div>
+                <h2>Para negar o convite, resolva a equação abaixo:</h2>
+                <div class="equation-box">
+                    ((x² + 1) / 0) + √(-999999999) = ?
+                </div>
+                <input type="text" class="input-field" id="equation-answer" placeholder="Digite sua resposta...">
+                <button class="btn btn-continue" onclick="checkEquation()">Enviar Resposta</button>
+                <div id="equation-error" class="error-message hidden">❌ Resposta incorreta.<br>Parece que você não conseguirá negar esse convite.</div>
+                <button id="accept-btn" class="btn btn-yes hidden" onclick="goToPage('page2')" style="margin-top: 20px;">😊 Tudo bem, vou aceitar</button>
+            </div>
+        </section>
+
+        <!-- Página 2: Comida -->
+        <section id="page2" class="page">
+            <div>
+                <h1>🍿 O que você prefere comer?</h1>
+                <div class="grid-options">
+                    <button class="option-btn" onclick="selectOption('page2', '🍔 Sanduíche', this)">🍔 Sanduíche</button>
+                    <button class="option-btn" onclick="selectOption('page2', '🍿 Pipoca', this)">🍿 Pipoca</button>
+                    <button class="option-btn" onclick="selectOption('page2', '🍕 Pizza', this)">🍕 Pizza</button>
+                    <button class="option-btn" onclick="selectOption('page2', '🍣 Sushi', this)">🍣 Sushi</button>
+                    <button class="option-btn" onclick="selectOption('page2', '🍬 Guloseimas', this)">🍬 Guloseimas</button>
+                    <button class="option-btn" onclick="selectOption('page2', '🌮 Tacos', this)">🌮 Tacos</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página 3: Transporte -->
+        <section id="page3" class="page">
+            <div>
+                <h1>🚗 Como prefere ir?</h1>
+                <div class="grid-options">
+                    <button class="option-btn" onclick="selectOption('page3', '😢 Sozinha', this)">😢 Sozinha</button>
+                    <button class="option-btn" onclick="selectOption('page3', '😊 Me busque', this)">😊 Me busque</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página 4: Alergias -->
+        <section id="page4" class="page">
+            <div>
+                <h1>⚕️ Possui alergias?</h1>
+                <div class="buttons-container">
+                    <button class="btn btn-yes" onclick="handleAllergies(true)">✅ Sim</button>
+                    <button class="btn btn-no" onclick="handleAllergies(false)">😊 Não</button>
+                </div>
+                <input type="text" id="allergies-input" class="input-field hidden" placeholder="Especifique quais alergias possui">
+                <button id="allergies-btn" class="btn btn-continue hidden" onclick="confirmAllergies()">Continuar</button>
+            </div>
+        </section>
+
+        <!-- Página 5: Observações -->
+        <section id="page5" class="page">
+            <div>
+                <h1>📝 Deseja adicionar observações?</h1>
+                <textarea id="observations" class="textarea-field" placeholder="Digite suas observações aqui..."></textarea>
+                <div class="buttons-container">
+                    <button class="btn btn-continue" onclick="saveObservations(true)">Enviar observação</button>
+                    <button class="btn btn-no" onclick="saveObservations(false)">Não tenho observações</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página 6: Dia -->
+        <section id="page6" class="page">
+            <div>
+                <h1>📅 Escolha o dia</h1>
+                <div class="grid-options">
+                    <button class="option-btn" onclick="selectOption('page6', '23', this)">23</button>
+                    <button class="option-btn" onclick="selectOption('page6', '24', this)">24</button>
+                    <button class="option-btn" onclick="selectOption('page6', '25', this)">25</button>
+                    <button class="option-btn" onclick="selectOption('page6', '26', this)">26</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Página 7: Horário -->
+        <section id="page7" class="page">
+            <div>
+                <h1>🕒 Escolha o horário</h1>
+                <div class="grid-options">
+                    <button class="option-btn" onclick="selectOption('page7', '14:00', this)">14:00</button>
+                    <button class="option-btn" onclick="selectOption('page7', '14:50', this)">14:50</button>
+                    <button class="option-btn" onclick="selectOption('page7', '16:50', this)">16:50</button>
+                    <button class="option-btn" onclick="selectOption('page7', '19:00', this)">19:00</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Página Final -->
+    <section id="page-final">
+        <div class="hearts-container" id="hearts"></div>
+        <div class="final-content">
+            <h1 class="fade-in">❤️ Tô contigo!</h1>
+            <div style="margin-top: 30px; text-align: left;">
+                <div class="summary-item fade-in">🎬 Filme: Super Girl</div>
+                <div class="summary-item fade-in">🍽️ Comida escolhida: <span id="summary-food"></span></div>
+                <div class="summary-item fade-in">🚗 Forma de ir: <span id="summary-transport"></span></div>
+                <div class="summary-item fade-in">⚕️ Alergias: <span id="summary-allergies"></span></div>
+                <div class="summary-item fade-in">📝 Observações: <span id="summary-observations"></span></div>
+                <div class="summary-item fade-in">📅 Dia escolhido: <span id="summary-day"></span></div>
+                <div class="summary-item fade-in">🕒 Horário da sessão: <span id="summary-time"></span></div>
+                <div class="summary-item fade-in">🚘 Vou te buscar às: <span id="summary-pickup"></span></div>
+            </div>
+            <h2 class="fade-in" style="margin-top: 30px;">✨ Convite confirmado com sucesso!</h2>
+            <p class="fade-in" style="font-size: 1.1rem; margin-top: 15px;">Mal posso esperar para compartilhar esse momento com você.</p>
+        </div>
+    </section>
+
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby7VXsqIi6dEYhyuda375uHU0O9xXgi1sT0kKtfnSf4SUBlxrQU9a_OAfxynZsrvKU1/exec';
+
+        let selections = {
+            food: '',
+            transport: '',
+            allergies: '',
+            observations: '',
+            day: '',
+            time: '',
+            pickupTime: ''
+        };
+
+        function goToPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageName).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function selectOption(currentPage, value, element) {
+            document.querySelectorAll(`#${currentPage} .option-btn`).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            element.classList.add('selected');
+
+            if (currentPage === 'page2') {
+                selections.food = value;
+                setTimeout(() => goToPage('page3'), 500);
+            } else if (currentPage === 'page3') {
+                selections.transport = value;
+                setTimeout(() => goToPage('page4'), 500);
+            } else if (currentPage === 'page6') {
+                selections.day = value;
+                setTimeout(() => goToPage('page7'), 500);
+            } else if (currentPage === 'page7') {
+                selections.time = value;
+                selections.pickupTime = calculatePickupTime(value);
+                setTimeout(() => sendDataToSheet(), 500);
+            }
+        }
+
+        function handleAllergies(hasAllergies) {
+            const input = document.getElementById('allergies-input');
+            const btn = document.getElementById('allergies-btn');
+            
+            if (hasAllergies) {
+                input.classList.remove('hidden');
+                btn.classList.remove('hidden');
+            } else {
+                selections.allergies = 'Nenhuma';
+                goToPage('page5');
+            }
+        }
+
+        function confirmAllergies() {
+            selections.allergies = document.getElementById('allergies-input').value || 'Não especificadas';
+            goToPage('page5');
+        }
+
+        function saveObservations(hasObservations) {
+            if (hasObservations) {
+                selections.observations = document.getElementById('observations').value || 'Nenhuma';
+            } else {
+                selections.observations = 'Nenhuma';
+            }
+            goToPage('page6');
+        }
+
+        function checkEquation() {
+            document.getElementById('equation-error').classList.remove('hidden');
+            document.getElementById('accept-btn').classList.remove('hidden');
+        }
+
+        function calculatePickupTime(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            let pickupHours = hours - 1;
+            if (pickupHours < 0) pickupHours = 23;
+            return `${String(pickupHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+
+        async function sendDataToSheet() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+            
+            const formData = new URLSearchParams();
+            formData.append('comida', selections.food);
+            formData.append('transporte', selections.transport);
+            formData.append('alergias', selections.allergies);
+            formData.append('observacoes', selections.observations);
+            formData.append('dia', selections.day);
+            formData.append('horario', selections.time);
+            formData.append('busca', selections.pickupTime);
+
+            try {
+                // Usando no-cors para evitar problemas de CORS com Google Apps Script
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                });
+                showFinalPage();
+            } catch (error) {
+                console.error('Erro ao enviar dados:', error);
+                // Mesmo com erro, mostramos a página final para não travar a experiência
+                showFinalPage();
+            } finally {
+                document.getElementById('loading-overlay').style.display = 'none';
+            }
+        }
+
+        function showFinalPage() {
+            document.getElementById('summary-food').textContent = selections.food;
+            document.getElementById('summary-transport').textContent = selections.transport;
+            document.getElementById('summary-allergies').textContent = selections.allergies;
+            document.getElementById('summary-observations').textContent = selections.observations;
+            document.getElementById('summary-day').textContent = selections.day;
+            document.getElementById('summary-time').textContent = selections.time;
+            document.getElementById('summary-pickup').textContent = selections.pickupTime;
+
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('page-final').classList.add('active');
+            
+            startHearts();
+            createConfetti();
+        }
+
+        function startHearts() {
+            const container = document.getElementById('hearts');
+            const heartEmojis = ['❤️', '💖', '💝', '💕', '💗'];
+            const heartInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+            setTimeout(() => clearInterval(heartInterval), 15000);
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('hearts');
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = ['#ff4d6d', '#2ecc71', '#f39c12', '#e74c3c'][Math.floor(Math.random() * 4)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                container.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>
